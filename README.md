@@ -17,17 +17,39 @@ Progress Analytics - Detailed statistics and completion rates.
 Custom Categories - Create personalized activity groups.
 
 <img width="897" height="825" alt="image" src="https://github.com/user-attachments/assets/407a624e-9d02-4d1c-b512-c3ca5d2abbcb" />
+
+
+
+
 <img width="1689" height="812" alt="image" src="https://github.com/user-attachments/assets/5a2acef3-7761-499f-8e57-8af1cfd13ee4" />
 
 
 
 
 👥 User Management
+
 Secure Authentication - Firebase-powered user registration and login
+
+<img width="633" height="605" alt="image" src="https://github.com/user-attachments/assets/20027ecc-bb5c-4949-95e2-f48e69efebe0" />
+
+<img width="623" height="651" alt="image" src="https://github.com/user-attachments/assets/70bca813-17b5-4f1b-b455-bad2cac0d7ab" />
+
+
 
 User Profiles - Personal statistics, streaks, and progress history
 
+<img width="1732" height="791" alt="image" src="https://github.com/user-attachments/assets/06585c5e-074c-49c4-9818-8cf9d189621c" />
+
+<img width="1348" height="683" alt="image" src="https://github.com/user-attachments/assets/a669e3d9-4cd0-4f4a-88a5-dbe0fe414907" />
+
+
+
 Admin Dashboard - Comprehensive user management and analytics
+
+<img width="1618" height="547" alt="image" src="https://github.com/user-attachments/assets/fb346539-9fbc-4b43-98c6-ad104af37537" />
+
+<img width="1335" height="547" alt="image" src="https://github.com/user-attachments/assets/f6d7696e-14ad-410a-ac84-39bed04e3d92" />
+
 
 📚 Resources
 Learning Library - Curated articles, videos, and books
@@ -35,6 +57,9 @@ Learning Library - Curated articles, videos, and books
 Admin Controls - Add/edit/delete resources (admin only)
 
 Categorized Content - Organized by type for easy browsing
+
+<img width="1584" height="557" alt="image" src="https://github.com/user-attachments/assets/660be635-6639-4f5b-b6d1-728f1f725793" />
+
 
 🎨 User Experience
 Responsive Design - Works seamlessly across all devices
