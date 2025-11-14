@@ -1,19 +1,26 @@
 Daily Habit Tracker 📊
 A modern, responsive web application for tracking daily habits and activities. Built with Firebase for real-time data synchronization, this tool helps users monitor their progress, build consistent routines, and achieve personal goals through intuitive visual tracking.
 
-https://img.shields.io/badge/Status-Active-success
-https://img.shields.io/badge/Version-1.0.0-blue
-https://img.shields.io/badge/License-MIT-green
+<img width="1711" height="853" alt="image" src="https://github.com/user-attachments/assets/ad4aab28-d9a0-40b0-801f-4bdde9af44bc" />
+
 
 ✨ Features
+
 🎯 Core Functionality
-Daily Activity Tracking - Customizable habit monitoring with progress visualization
 
-Interactive Calendar - Color-coded completion overview with real-time updates
+Daily Activity Tracking - Customizable habit monitoring with progress visualization.
 
-Progress Analytics - Detailed statistics and completion rates
+Interactive Calendar - Color-coded completion overview with real-time updates.
 
-Custom Categories - Create personalized activity groups
+Progress Analytics - Detailed statistics and completion rates.
+
+Custom Categories - Create personalized activity groups.
+
+<img width="897" height="825" alt="image" src="https://github.com/user-attachments/assets/407a624e-9d02-4d1c-b512-c3ca5d2abbcb" />
+<img width="1689" height="812" alt="image" src="https://github.com/user-attachments/assets/5a2acef3-7761-499f-8e57-8af1cfd13ee4" />
+
+
+
 
 👥 User Management
 Secure Authentication - Firebase-powered user registration and login
