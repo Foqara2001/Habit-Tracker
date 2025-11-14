@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Habit Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+  #splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+  }
+  #splash-screen.hidden {
+    display: none;
+  }
+</style>
+
+<div id="splash-screen">
+  <div class="spinner"></div>
+  <p>Loading...</p>
+</div>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Habit Tracker</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('tracker')">Daily Tracker</a></li>
+                <li><a href="#" onclick="showPage('resources')">Resources</a></li>
+                <li><a href="#" id="profile-link" onclick="showPage('profile')">My Profile</a></li>
+                <li><a href="#" id="admin-link" onclick="showPage('admin')">Admin Panel</a></li>
+                <li><a href="#" id="auth-link">Login</a></li>
+            </ul>
+            <div class="profile-avatar" id="profile-avatar"></div>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <section id="home-page" class="page">
+        <div class="hero">
+            <div class="container">
+                <h1>Welcome to Daily Habit Tracker</h1>
+                <p>A digital tool to help you track your daily habits and activities</p>
+                <div class="month-info">
+                    <p id="current-date">Current Month</p>
+                    <div class="countdown">
+                        <span id="remaining-days">30</span> days remaining in month
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                    <button class="digital-btn" onclick="showPage('tracker')">Start Tracking</button>
+                    <button class="digital-btn" onclick="showPage('resources')">Explore Resources</button>
+                </div>
+            </div>
+        </div>
+         <div class="features">
+            <div class="container">
+                <div class="feature-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Daily Tracking</h3>
+                    <p>Track your daily habits and activities throughout the month</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Statistics & Reports</h3>
+                    <p>View your performance reports and progress levels</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Learning Resources</h3>
+                    <p>Collection of useful resources, articles, and learning materials</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Tracker Page -->
+    <section id="tracker-page" class="page">
+        <div class="container">
+            <h2 class="page-title">Daily Tracker</h2>
+           <div class="calendar-controls">
+            <button id="prev-month" class="month-nav-btn">
+            <i class="fas fa-chevron-left"></i>
+            </button>
+            <h3 id="current-month-year"></h3>
+            <button id="next-month" class="month-nav-btn">
+            <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+         <div id="calendar" class="calendar-grid"></div>
+         </div>
+            
+            <!-- Day Tracking Modal -->
+<div id="tracker-container" class="tracker-modal">
+  <div class="tracker-header">
+    <h3 id="tracker-title">Day 1</h3>
+    <button class="close-btn" onclick="goBack()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div id="day-progress-bar" class="progress-fill"></div>
+    </div>
+    <span class="progress-text">0% complete</span>
+  </div>
+  <div id="tracker-content" class="tracker-content">
+    <!-- Basic content will be loaded from template -->
+    
+    <!-- Custom Categories Section - Modified here -->
+    <div id="custom-categories-section" style="margin-top: 30px; border-top: 1px dashed #e2e8f0; padding-top: 20px;">
+      <h4 style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-layer-group" style="color: #2563eb;"></i>
+        Custom Daily Activities
+      </h4>
+      <div id="custom-categories-container" style="margin: 15px 0;">
+        <!-- Custom categories will be loaded here dynamically -->
+      </div>
+      <button class="add-category-btn" 
+              style="display: flex; align-items: center; justify-content: center;
+                     gap: 8px; width: 100%; padding: 10px;
+                     background-color: rgba(37, 99, 235, 0.05);
+                     color: #2563eb; border: 1px dashed #2563eb;
+                     border-radius: 8px; cursor: pointer;"
+              onclick="showAddCategoryModal(getCurrentDayFromTracker())">
+
+        <i class="fas fa-plus-circle"></i>
+        Add New Category
+      </button>
+    </div>
+  </div>
+</div>
+<div id="category-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Create New Category</h3>
+      <button class="close-btn" onclick="closeCategoryModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="category-message" class="message" style="display: none;"></div>
+      <div class="form-group">
+        <label for="category-name">Category Name</label>
+        <input type="text" id="category-name" class="form-input" placeholder="Example: Study, Exercise, Work">
+      </div>
+      <div class="form-group">
+        <label for="category-icon">Choose Icon</label>
+        <select id="category-icon" class="form-input">
+          <option value="fa-book">Book</option>
+          <option value="fa-dumbbell">Exercise</option>
+          <option value="fa-briefcase">Work</option>
+          <option value="fa-heart">Health</option>
+          <option value="fa-users">Family</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="secondary-btn" onclick="closeCategoryModal()">Cancel</button>
+      <button id="create-category-btn" class="primary-btn" onclick="createNewCategory(getCurrentDayFromTracker())">
+        Create
+      </button>
+    </div>
+  </div>
+</div>
+            
+         <template id="template-content">
+    <!-- Dynamic Daily Activities Section -->
+    <div class="tasks-section">
+        <h4><i class="fas fa-clock"></i> Daily Activities</h4>
+        <div class="tasks-group" id="daily-activities-group">
+            <!-- Tasks will be loaded dynamically here -->
+        </div>
+         <button class="add-task-btn" onclick="addCustomTaskToCategory('daily', selectedDay)">
+         <i class="fas fa-plus"></i> Add Activity
+       </button>
+    </div>
+    
+    <div class="tasks-section">
+        <h4><i class="fas fa-book"></i> Learning & Reading</h4>
+        <div class="tasks-group" id="learning-group">
+            <!-- Tasks will be loaded dynamically here -->
+        </div>
+         <button class="add-task-btn" onclick="addCustomTaskToCategory('learning', selectedDay)">
+         <i class="fas fa-plus"></i> Add Activity
+       </button>
+    </div>
+    
+    <div class="tasks-section">
+        <h4><i class="fas fa-hands-praying"></i> Mindfulness & Reflection</h4>
+        <div class="tasks-group" id="mindfulness-group">
+            <!-- Tasks will be loaded dynamically here -->
+        </div>
+         <button class="add-task-btn" onclick="addCustomTaskToCategory('mindfulness', selectedDay)">
+         <i class="fas fa-plus"></i> Add Activity
+       </button>
+    </div>
+    
+    <div class="tasks-section">
+        <h4><i class="fas fa-star"></i> Additional Activities</h4>
+        <div class="tasks-group" id="extra-group">
+            <!-- Tasks will be loaded dynamically here -->
+        </div>
+       <button class="add-task-btn" onclick="addCustomTaskToCategory('extra', selectedDay)">
+    <i class="fas fa-plus"></i> Add Activity
+</button>
+    </div>
+    
+    <!-- Custom Categories Section -->
+    <div class="tasks-section">
+        <h4><i class="fas fa-layer-group"></i> Custom Categories</h4>
+        <div id="custom-categories-container" style="margin: 15px 0;">
+            <!-- Custom categories will be loaded here dynamically -->
+        </div>
+        <button class="add-category-btn" onclick="showAddCategoryModal(getCurrentDayFromTracker())">
+            <i class="fas fa-plus-circle"></i> Add New Category
+        </button>
+    </div>
+</template> 
+        </div>
+    </section>
+
+    <!-- Resources Page -->
+<section id="resources-page" class="page">
+    <div class="container">
+        <h2 class="page-title">Resources</h2>
+        
+        <!-- Add New Resource Button -->
+        <div id="add-resource-btn-container" style="display: none; margin-bottom: 20px;">
+            <button id="add-resource-btn" class="primary-btn" onclick="showAddResourceModal()">
+                <i class="fas fa-plus"></i> Add New Resource
+            </button>
+        </div>
+        
+        <div class="resources-tabs">
+            <button class="tab-btn active" onclick="openTab('articles')">
+                <i class="fas fa-newspaper"></i> Articles & Guides
+            </button>
+            <button class="tab-btn" onclick="openTab('learning')">
+                <i class="fas fa-graduation-cap"></i> Learning Materials
+            </button>
+            <button class="tab-btn" onclick="openTab('videos')">
+                <i class="fas fa-video"></i> Video Content
+            </button>
+            <button class="tab-btn" onclick="openTab('books')">
+                <i class="fas fa-book"></i> Recommended Books
+            </button>
+        </div>
+        
+        <div id="articles" class="tab-content active">
+            <h3><i class="fas fa-newspaper"></i> Articles & Guides</h3>
+            <ul id="articles-resources" class="resources-list"></ul>
+        </div>
+        
+        <div id="learning" class="tab-content">
+            <h3><i class="fas fa-graduation-cap"></i> Learning Materials</h3>
+            <ul id="learning-resources" class="resources-list"></ul>
+        </div>
+        
+        <div id="videos" class="tab-content">
+            <h3><i class="fas fa-video"></i> Video Content</h3>
+            <ul id="videos-resources" class="resources-list"></ul>
+        </div>
+        
+        <div id="books" class="tab-content">
+            <h3><i class="fas fa-book"></i> Recommended Books</h3>
+            <ul id="books-resources" class="resources-list"></ul>
+        </div>
+    </div>
+    
+    <!-- Add New Resource Modal -->
+    <div id="resource-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Resource</h3>
+                <button class="close-btn" onclick="closeResourceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="resource-modal-message" class="message" style="display: none;"></div>
+                <div class="form-group">
+                    <label for="resource-modal-type">Resource Type</label>
+                    <select id="resource-modal-type" class="form-input">
+                        <option value="articles">Articles & Guides</option>
+                        <option value="learning">Learning Materials</option>
+                        <option value="videos">Video Content</option>
+                        <option value="books">Recommended Books</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resource-modal-title">Resource Title</label>
+                    <input type="text" id="resource-modal-title" class="form-input" placeholder="Enter resource title">
+                </div>
+                <div class="form-group">
+                    <label for="resource-modal-url">Resource URL</label>
+                    <input type="url" id="resource-modal-url" class="form-input" placeholder="Enter resource URL">
+                </div>
+                <div class="form-group" id="author-field" style="display: none;">
+                    <label for="resource-modal-author">Author Name</label>
+                    <input type="text" id="resource-modal-author" class="form-input" placeholder="Enter author name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeResourceModal()">Cancel</button>
+                <button id="save-resource-btn">Save</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="profile-page" class="page">
+          <div id="profile-loading-overlay" class="loading-overlay" style="display: none;">
+          <div class="loading-content">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <p class="loading-text">Loading data...</p>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+        </div>
+        <div class="container">
+          <div class="profile-header">
+            <div class="avatar-large" id="profile-avatar-large"></div>
+            <div class="profile-info">
+              <h2 id="profile-username">Loading...</h2>
+              <p id="profile-email">Loading...</p>
+              <p class="join-date">Member since: <span id="profile-join-date">Loading...</span></p>
+            </div>
+          </div>
+          
+          <div class="profile-stats">
+            <div class="stat-card">
+              <div class="stat-value" id="total-days">0</div>
+              <div class="stat-label">Completed Days</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="current-streak">0</div>
+              <div class="stat-label">Current Streak</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="completion-rate">0%</div>
+              <div class="stat-label">Completion Rate</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="total-activities">0</div>
+              <div class="stat-label">Activities Recorded</div>
+            </div>
+          </div>
+          
+          <div class="profile-section">
+            <h3><i class="fas fa-calendar-alt"></i> Monthly Progress</h3>
+            <div class="monthly-calendar" id="profile-calendar">
+              <!-- Calendar will be generated here -->
+            </div>
+          </div>
+          
+          <div class="profile-section">
+            <h3><i class="fas fa-chart-line"></i> Progress Overview</h3>
+            <div class="progress-chart">
+              <canvas id="progress-chart"></canvas>
+            </div>
+          </div>
+          
+          <div class="profile-actions">
+            <button class="btn btn-secondary" onclick="showEditProfileModal()">
+              <i class="fas fa-edit"></i> Edit Profile
+            </button>
+            <button class="btn btn-danger" onclick="showDeleteAccountModal()">
+              <i class="fas fa-trash-alt"></i> Delete Account
+            </button>
+          </div>
+        </div>
+        
+        <!-- Edit Profile Modal -->
+        <div id="edit-profile-modal" class="modal" style="display: none;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Edit Profile</h3>
+              <button class="close-btn" onclick="closeEditProfileModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="edit-username">Username</label>
+                <input type="text" id="edit-username" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="edit-email">Email</label>
+                <input type="email" id="edit-email" class="form-input">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" onclick="closeEditProfileModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="updateProfile()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Delete Account Modal -->
+        <div id="delete-account-modal" class="modal" style="display: none;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Delete Account</h3>
+              <button class="close-btn" onclick="closeDeleteAccountModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+              <div class="form-group">
+                <label for="confirm-delete">Type "DELETE" to confirm:</label>
+                <input type="text" id="confirm-delete" class="form-input">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" onclick="closeDeleteAccountModal()">Cancel</button>
+              <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- Admin Page -->
+    <section id="admin-page" class="page">
+        <!-- Admin content will be loaded dynamically -->
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="auth-modal-title">Login</h3>
+                <button class="close-btn" onclick="closeAuthModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="auth-message" class="message" style="display: none;"></div>
+               <!-- In the login form -->
+<div id="login-form">
+    <form onsubmit="login(); return false;">
+        <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" class="form-input" 
+                   placeholder="Enter your email" required 
+                   autocomplete="username">
+        </div>
+        <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-input" 
+                   placeholder="Enter your password" required 
+                   autocomplete="current-password">
+        </div>
+        <button type="submit" class="primary-btn">Login</button>
+    </form>
+    <p class="auth-switch">
+        Don't have an account? <a href="#" onclick="showRegisterForm()">Register</a>
+    </p>
+</div>
+
+<!-- In the register form -->
+<div id="register-form" style="display: none;">
+   <form onsubmit="register(); return false;">
+        <div class="form-group">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" class="form-input" 
+                   placeholder="Choose a username" required 
+                   autocomplete="username"
+                   value="ahmad fogara">
+        </div>
+        <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" class="form-input" 
+                   placeholder="Enter your email" required
+                   autocomplete="email"
+                   value="fogara@mail.tau.ac.il">
+        </div>
+        <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" class="form-input" 
+                   placeholder="Create a password" required minlength="6"
+                   autocomplete="new-password">
+        </div>
+        <div class="form-group">
+            <label for="register-confirm-password">Confirm Password</label>
+            <input type="password" id="register-confirm-password" class="form-input" 
+                   placeholder="Confirm your password" required minlength="6"
+                   autocomplete="new-password">
+        </div>
+        <button type="submit" class="primary-btn">Create Account</button>
+    </form>
+    <p class="auth-switch">
+        Already have an account? <a href="#" onclick="showLoginForm()">Login</a>
+    </p>
+</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+   <!-- App Scripts -->
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="app.js"></script>
+<script src="tracker.js"></script>
+<script src="profile.js"></script>
+<script src="resources.js"></script>
+<script src="admin.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
